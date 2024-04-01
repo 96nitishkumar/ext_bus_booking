@@ -1,0 +1,2 @@
+module UserBlock::UsersHelper
+end
