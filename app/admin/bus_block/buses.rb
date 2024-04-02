@@ -72,48 +72,16 @@ ActiveAdmin.register BusBlock::Bus, as: "Bus" do
     end
   end
 
-  # panel "Followings" do
-  #   table_for(user.followings) do
-  #     if user.followings.present?
-  #       column :following_username do |fg_user|
-  #         link_to fg_user.following.name.capitalize, admin_user_path(fg_user.following_id)
-  #       end
-  #       column :follower_profile_pic do |user|
-  #         user.following.profile_pic.attached? ? image_tag(url_for(user.following.profile_pic),style: 'border-radius: 50%; height: 50px; width: 50px;'):"profile pic not found"
-  #       end
-  #     else
-  #       para "No followings found."
-  #     end
-  #   end
-  # end
-
-  # panel "Favorite Property" do
-  #   table_for(user.favorite_properties) do
-  #     if user.favorite_properties.present?
-  #       column :property_name do |p_name|
-  #         link_to p_name.property.property_name, admin_property_path(p_name.property.id)
-  #       end
-  #       column :average_rating do |p_name|
-  #         p_name.property.ratings.average(:value)||0.0
-  #       end
-  #     else
-  #       para "No property found."
-  #     end
-  #   end
-  # end
-
-  # panel "Property Rated List" do
-  #   table_for(user.ratings) do
-  #     if user.ratings.present?
-  #       column :property_name do |rating|
-  #         link_to rating.property.property_name, admin_property_path(rating.property_id)
-  #       end
-  #       column :rating_value do |rating|
-  #         rating.value
-  #       end
-  #     else
-  #       para "No property Rated found."
-  #     end
-  #   end
+  panel "Stops" do
+    table_for(bus.stops) do
+      if bus.stops.present?
+        column :bus_stops_name do |stop|
+          link_to stop.name.capitalize, admin_stop_path(stop.id)
+        end
+      else
+        para "No stops found."
+      end
+    end
+  end
   end
 end
