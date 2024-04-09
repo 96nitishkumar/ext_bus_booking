@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_03_29_122315) do
+ActiveRecord::Schema[7.0].define(version: 2024_04_08_102021) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -46,6 +46,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_29_122315) do
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "from_stop"
+    t.integer "to_stop"
   end
 
   create_table "bus_block_bus_stops", force: :cascade do |t|
@@ -66,9 +68,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_29_122315) do
 
   create_table "bus_block_seats", force: :cascade do |t|
     t.string "seat_number"
-    t.boolean "is_booked", default: false
-    t.string "from_city"
-    t.string "to_city"
     t.bigint "bus_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -79,6 +78,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_29_122315) do
     t.string "city"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.float "latitude"
+    t.float "longitude"
+    t.string "address"
   end
 
   create_table "user_block_users", force: :cascade do |t|
