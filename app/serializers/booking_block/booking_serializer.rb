@@ -11,7 +11,11 @@ class BookingBlock::BookingSerializer
           bus_name: bus_name,
           seat_number: seat_number,
           from_stop: from_stop.stop.name,
-          to_stop: to_stop.stop.name
+          to_stop: to_stop.stop.name,
+          status: object.status,
+          amount: object.amount.round(2),
+          distance_in_km: (object.amount/3).round(2)
             }
   end
+
 end
