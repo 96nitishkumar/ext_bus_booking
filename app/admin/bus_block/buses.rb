@@ -18,19 +18,41 @@ ActiveAdmin.register BusBlock::Bus, as: "Bus" do
       ActiveRecord::Base.transaction do
         stop_ids = params["bus_block_bus"]["stop_ids"]
         params["bus_block_bus"].delete("stop_ids")
-        bus = BusBlock::Bus.new(resource_params.first)
+        @bus = BusBlock::Bus.new(resource_params.first)
         
-        if bus.save
+        if @bus.save
           stop_ids.shift
           stops = BusBlock::Stop.find(stop_ids)
-          bus.stops << stops
-          redirect_to admin_bus_path(bus.id)
+          @bus.stops << stops
+          redirect_to admin_bus_path(@bus.id)
         else
-          flash[:error] = bus.errors.full_messages.join(", ")
+          render :new
           raise ActiveRecord::Rollback
         end
       end
       rescue ActiveRecord::RecordInvalid => e
+        flash[:error] = e.message
+        redirect_to :new_admin_bus
+    end
+
+
+    def update
+        stop_ids = params["bus_block_bus"]["stop_ids"]
+        params["bus_block_bus"].delete("stop_ids")
+        @bus = BusBlock::Bus.find(params[:id])
+        stop_ids.shift
+        stops = BusBlock::Stop.find(stop_ids)
+        exists_stop_ids = @bus.stops.ids & stops.pluck(:id)
+        if exists_stop_ids.present?
+          flash[:errors] = "This Bus already has #{BusBlock::Stop.find(exists_stop_ids).pluck(:name).join(", ")} please choose another bus stops"
+        elsif @bus.update(resource_params.first)
+          @bus.stops << stops
+          redirect_to admin_bus_path(@bus.id)
+        else
+          render :new
+        end
+
+    rescue ActiveRecord::RecordInvalid => e
         flash[:error] = e.message
         redirect_to :new_admin_bus
     end
@@ -73,10 +95,13 @@ ActiveAdmin.register BusBlock::Bus, as: "Bus" do
   end
 
   panel "Stops" do
-    table_for(bus.stops) do
-      if bus.stops.present?
+    table_for(stops = bus.bus_stops.order(stop_number: :asc)) do
+      if stops.present?
         column :bus_stops_name do |stop|
-          link_to stop.name.capitalize, admin_stop_path(stop.id)
+          link_to stop.stop.name.capitalize, admin_stop_path(stop.stop.id)
+        end
+        column :bus_stops_number do |stop|
+            stop.stop_number || "Not found"
         end
       else
         para "No stops found."

@@ -10,12 +10,12 @@ Rails.application.routes.draw do
   namespace :bus_block do 
     get 'bus_list', to: 'buses#bus_list'
     get 'show_bus_stops', to: 'buses#show_bus_stops'
-    get 'available_seat', to: 'seats#available_seat'
-    get 'booked_seat', to: 'seats#booked_seat'
+    get 'available_or_booked_seat', to: 'seats#available_or_booked_seat'
   end
 
   namespace :booking_block do 
     post 'create', to: 'bookings#create'
     get 'booking_list', to: 'bookings#booking_list'
+    get 'download_file', to: 'bookings#download_file'
   end
 end
