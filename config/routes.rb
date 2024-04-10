@@ -11,6 +11,7 @@ Rails.application.routes.draw do
     get 'bus_list', to: 'buses#bus_list'
     get 'show_bus_stops', to: 'buses#show_bus_stops'
     get 'available_or_booked_seat', to: 'seats#available_or_booked_seat'
+    get 'location_based_stops', to: 'buses#location_based_stops'
   end
 
   namespace :booking_block do 
