@@ -22,4 +22,10 @@ class BusBlock::BusesController < ApplicationController
 		end
 	end
 
+	def location_based_stops
+    	bus_stops = BusBlock::Stop.all
+      bus_stops = BusBlock::Stop.near(params[:location], params[:distance] || 3, order: :distance) if params[:location].present?
+      render json: { bus_stops: bus_stops, messages: "near by stops" }, status: 200
+  end
+
 end
